@@ -1,0 +1,23 @@
+{
+  "plan" : "ServeMaster.pml#1555601736192",
+  "uiElementMap" : {
+    "1555601746711" : {
+      "id" : 1555601746713,
+      "name" : "1555601746713",
+      "comment" : "",
+      "x" : -45,
+      "y" : -225,
+      "visible" : false,
+      "bendPoints" : [ ]
+    },
+    "1555601748848" : {
+      "id" : 1555601748849,
+      "name" : "1555601748849",
+      "comment" : "",
+      "x" : 142,
+      "y" : -231,
+      "visible" : false,
+      "bendPoints" : [ ]
+    }
+  }
+}

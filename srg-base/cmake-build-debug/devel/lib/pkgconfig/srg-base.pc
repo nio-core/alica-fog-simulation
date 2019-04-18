@@ -1,0 +1,8 @@
+prefix=/home/emmeda/Research/dev/rosws/src/service-robot-grid/srg-base/cmake-build-debug/devel
+
+Name: srg-base
+Description: Description of srg-base
+Version: 0.0.0
+Cflags: -I/home/emmeda/Research/dev/rosws/src/service-robot-grid/srg-base/include
+Libs: -L/home/emmeda/Research/dev/rosws/src/service-robot-grid/srg-base/cmake-build-debug/devel/lib 
+Requires: alica_engine srg-expressions

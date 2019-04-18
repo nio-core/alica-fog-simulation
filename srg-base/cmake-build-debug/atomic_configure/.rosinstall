@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/emmeda/Research/dev/rosws/src/service-robot-grid/srg-base/cmake-build-debug/devel/setup.sh

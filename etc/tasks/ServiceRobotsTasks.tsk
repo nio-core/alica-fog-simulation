@@ -1,0 +1,27 @@
+{
+  "id" : 1555601264276,
+  "name" : "ServiceRobotsTasks",
+  "comment" : "",
+  "relativeDirectory" : "",
+  "tasks" : [ {
+    "id" : 1555601275405,
+    "name" : "Transport",
+    "comment" : "",
+    "taskRepository" : 1555601264276
+  }, {
+    "id" : 1555601323994,
+    "name" : "Fetch",
+    "comment" : "",
+    "taskRepository" : 1555601264276
+  }, {
+    "id" : 1555601328081,
+    "name" : "Search",
+    "comment" : "",
+    "taskRepository" : 1555601264276
+  }, {
+    "id" : 1555601344076,
+    "name" : "Serve",
+    "comment" : "",
+    "taskRepository" : 1555601264276
+  } ]
+}
