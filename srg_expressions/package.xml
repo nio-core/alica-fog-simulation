@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>srg-expressions</name>
+  <name>srg_expressions</name>
   <version>0.0.0</version>
-  <description>The srg-expressions package</description>
+  <description>The srg_expressions package</description>
 
   <maintainer email="opfer@vs.uni-kassel.de">Stephan Opfer</maintainer>
   

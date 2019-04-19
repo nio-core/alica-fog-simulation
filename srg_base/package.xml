@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>srg-base</name>
+  <name>srg_base</name>
   <version>0.0.0</version>
   <description>The srg_base package</description>
 
@@ -9,6 +9,7 @@
   <license>MIT</license>
 
   <depend>alica_engine</depend>
+  <depend>alica_dummy_proxy</depend>
   <depend>srg_expressions</depend>
 
   <buildtool_depend>catkin</buildtool_depend>

@@ -1,8 +1,0 @@
-prefix=/usr/local
-
-Name: srg-base
-Description: Description of srg-base
-Version: 0.0.0
-Cflags: -I/usr/local/include
-Libs: -L/usr/local/lib 
-Requires: alica_engine srg-expressions

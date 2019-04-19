@@ -5,6 +5,7 @@
 #include <ConditionCreator.h>
 #include <UtilityFunctionCreator.h>
 #include <ConstraintCreator.h>
+#include <communication/AlicaDummyCommunication.h>
 
 #include <chrono>
 #include <iostream>
@@ -25,8 +26,8 @@ Base::Base(std::string roleSetName, std::string masterPlanName, std::string role
     uc = new alica::UtilityFunctionCreator();
     crc = new alica::ConstraintCreator();
 
-    //    ae->setAlicaClock(new alicaRosProxy::AlicaROSClock());
-    //    ae->setCommunicator(new alicaRosProxy::AlicaRosCommunication(ae));
+    ae->setAlicaClock(new alica::AlicaClock());
+    ae->setCommunicator(new alicaDummyProxy::AlicaDummyCommunication(ae));
 
     // ASP Solver
 //    std::vector<char const*> args{"clingo", nullptr};
@@ -39,13 +40,16 @@ Base::Base(std::string roleSetName, std::string masterPlanName, std::string role
     //    wm->setEngine(ae);
     //    wm->init();
 
-    ae->init(bc, cc, uc, crc);
+    if (!ae->init(bc, cc, uc, crc)) {
+        std::cerr << "Base: Unable to initialize the Alica Engine successfull!" << std::endl;
+    }
 
 //    wm->knowledgeManager.initializeSolver();
 }
 
 void Base::start()
 {
+    running = true;
     ae->start();
 }
 
