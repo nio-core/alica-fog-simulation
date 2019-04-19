@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.10.2) 
-project(srg-base)
+project(srg_base)
 
 add_compile_options(-std=c++11)
 
-find_package(catkin REQUIRED COMPONENTS alica_engine srg-expressions)
+find_package(catkin REQUIRED COMPONENTS alica_engine srg_expressions)
 
 catkin_package(
   INCLUDE_DIRS include
 #  LIBRARIES srg-base
-  CATKIN_DEPENDS alica_engine srg-expressions
+  CATKIN_DEPENDS alica_engine srg_expressions
 #  DEPENDS system_lib
 )
 
