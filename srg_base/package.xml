@@ -9,7 +9,7 @@
   <license>MIT</license>
 
   <depend>alica_engine</depend>
-  <depend>alica_dummy_proxy</depend>
+  <depend>alica_capnzero_proxy</depend>
   <depend>srg_expressions</depend>
 
   <buildtool_depend>catkin</buildtool_depend>

@@ -5,7 +5,7 @@
 #include <ConditionCreator.h>
 #include <UtilityFunctionCreator.h>
 #include <ConstraintCreator.h>
-#include <communication/AlicaDummyCommunication.h>
+#include <communication/AlicaCapnzeroCommunication.h>
 
 #include <chrono>
 #include <iostream>
@@ -27,7 +27,7 @@ Base::Base(std::string roleSetName, std::string masterPlanName, std::string role
     crc = new alica::ConstraintCreator();
 
     ae->setAlicaClock(new alica::AlicaClock());
-    ae->setCommunicator(new alicaDummyProxy::AlicaDummyCommunication(ae));
+    ae->setCommunicator(new alicaCapnzeroProxy::AlicaCapnzeroCommunication(ae));
 
     // ASP Solver
 //    std::vector<char const*> args{"clingo", nullptr};
