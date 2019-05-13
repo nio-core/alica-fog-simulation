@@ -6,6 +6,10 @@
 #include <UtilityFunctionCreator.h>
 #include <ConstraintCreator.h>
 #include <communication/AlicaCapnzeroCommunication.h>
+#include <srg/SRGWorldModel.h>
+
+#include <asp_solver_wrapper/ASPSolverWrapper.h>
+#include <reasoner/asp/Solver.h>
 
 #include <chrono>
 #include <iostream>
@@ -30,15 +34,15 @@ Base::Base(std::string roleSetName, std::string masterPlanName, std::string role
     ae->setCommunicator(new alicaCapnzeroProxy::AlicaCapnzeroCommunication(ae));
 
     // ASP Solver
-//    std::vector<char const*> args{"clingo", nullptr};
-//    auto solver = new ::reasoner::asp::Solver(args);
-//    auto solverWrapper = new alica::reasoner::ASPSolverWrapper(ae, args);
-//    solverWrapper->init(solver);
-//    ae->addSolver(solverWrapper);
+    std::vector<char const*> args{"clingo", nullptr};
+    auto solver = new ::reasoner::asp::Solver(args);
+    auto solverWrapper = new alica::reasoner::ASPSolverWrapper(ae, args);
+    solverWrapper->init(solver);
+    ae->addSolver(solverWrapper);
 
-    //    wm = WumpusWorldModel::getInstance();
-    //    wm->setEngine(ae);
-    //    wm->init();
+    wm = SRGWorldModel::getInstance();
+    wm->setEngine(ae);
+    wm->init();
 
     if (!ae->init(bc, cc, uc, crc)) {
         std::cerr << "Base: Unable to initialize the Alica Engine successfull!" << std::endl;
