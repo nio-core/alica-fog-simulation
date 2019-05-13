@@ -18,11 +18,11 @@ catkin_package(
 include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_library(srg_worldmodel
-  src/SRGWorldModel.cpp
-  src/wm/SRGSimData.cpp
-  src/wm/ASPKnowledgeBase.cpp
-  src/wm/KnowledgeManager.cpp
-)
+        src/SRGWorldModel.cpp
+        src/SRGSimData.cpp
+        src/ASPKnowledgeBase.cpp
+        src/KnowledgeManager.cpp
+        src/ConceptNet.cpp include/srg/wm/ConceptNet.h)
 
 target_link_libraries(srg_worldmodel
   ${catkin_LIBRARIES} 

@@ -15,6 +15,7 @@ SRGWorldModel::SRGWorldModel()
         : WorldModel()
         , sRGSimData(this)
         , knowledgeManager(this)
+        , conceptNet(this)
 {
     this->agentName = sc->getHostname();
 }

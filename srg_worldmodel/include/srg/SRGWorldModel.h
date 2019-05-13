@@ -2,6 +2,7 @@
 
 #include "wm/KnowledgeManager.h"
 #include "wm/SRGSimData.h"
+#include "srg/wm/ConceptNet.h"
 #include <SystemConfig.h>
 #include <essentials/EventTrigger.h>
 #include <supplementary/InformationElement.h>
@@ -19,7 +20,6 @@ class AlicaClock;
 
 namespace srg
 {
-
 class SRGWorldModel : public supplementary::WorldModel
 {
 public:
@@ -32,6 +32,7 @@ public:
     // Public Data Access Classes
     wm::SRGSimData sRGSimData;
     wm::KnowledgeManager knowledgeManager;
+    wm::ConceptNet conceptNet;
 
 private:
     SRGWorldModel(); /**< Private Singleton Constructor */
