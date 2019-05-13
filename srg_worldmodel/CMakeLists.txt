@@ -22,8 +22,10 @@ add_library(srg_worldmodel
         src/SRGSimData.cpp
         src/ASPKnowledgeBase.cpp
         src/KnowledgeManager.cpp
-        src/ConceptNet.cpp include/srg/wm/ConceptNet.h)
+        src/ConceptNet.cpp
+        )
 
 target_link_libraries(srg_worldmodel
-  ${catkin_LIBRARIES} 
+  ${catkin_LIBRARIES}
+  curl
 )
