@@ -1,5 +1,10 @@
 #pragma once
 
+#include "srg/container/Edge.h"
+#include "srg/container/Relation.h"
+
+#include <yaml-cpp/yaml.h>
+
 #include <map>
 #include <string>
 
@@ -12,65 +17,27 @@ namespace wm
 class ConceptNet
 {
 public:
-    ConceptNet(SRGWorldModel* wm);
-    virtual ~ConceptNet();
+    explicit ConceptNet(SRGWorldModel* wm);
+    virtual ~ConceptNet() = default;
 
-    enum Relations
-    {
-        RelatedTo,
-        FormOf,
-        IsA,
-        PartOf,
-        HasA,
-        UsedFor,
-        CapableOf,
-        AtLocation,
-        Causes,
-        HasSubevent,
-        HasFirstSubevent,
-        HasLastSubevent,
-        HasPrerequisite,
-        HasProperty,
-        MotivatedByGoal,
-        ObstructedBy,
-        Desires,
-        CreatedBy,
-        Synonym,
-        Antonym,
-        DistinctFrom,
-        DerivedFrom,
-        SymbolOf,
-        DefinedAs,
-        Entails,
-        MannerOf,
-        LocatedNear,
-        HasContext,
-        SimilarTo,
-        EtymologicallyRelatedTo,
-        EtymologicallyDerivedFrom,
-        CausesDesire,
-        MadeOf,
-        ReceivesAction,
-        InstanceOf,
-        NotDesires,
-        NotUsedFor,
-        NotCapableOf,
-        NotIsA,
-        NotHasProperty
-    };
-
-    std::string getConcept(std::string concept);
-    std::string getCompleteEdge(ConceptNet::Relations relation, std::string fromConcept, std::string toConcept);
-    std::string getOutgoingEdges(ConceptNet::Relations relation, std::string fromConcept);
-    std::string getIncomingEdges(ConceptNet::Relations relation, std::string toConcept);
-    std::string getRelations(std::string concept, std::string otherConcept);
-    double getRelatedness(std::string firstConcept, std::string secondConcept);
+    std::vector<srg::container::Edge> getEdges(const std::string& concept);
+    std::vector<srg::container::Edge> getCompleteEdge(srg::container::Relation relation, const std::string& fromConcept, const std::string& toConcept);
+    std::vector<srg::container::Edge> getOutgoingEdges(srg::container::Relation relation, const std::string& fromConcept);
+    std::vector<srg::container::Edge> getIncomingEdges(srg::container::Relation relation, const std::string& toConcept);
+    std::vector<srg::container::Edge> getRelations(const std::string& concept, const std::string& otherConcept);
+    double getRelatedness(const std::string& firstConcept, const std::string& secondConcept);
 
 private:
     SRGWorldModel* wm;
-    std::map<ConceptNet::Relations, std::string> relationMapping;
+    std::map<srg::container::Relation, std::string> relationMapping;
     void init();
-    std::string httpGet(std::string url);
+    std::string httpGet(const std::string& url);
+    bool isValid(const YAML::Node& node);
+    srg::container::Relation getRelation(const std::string& relation);
+    bool conceptContainsNonASCII(const std::string& concept);
+    std::string trimTerm(const std::string& term);
+    void generateEdges(const std::string& json, std::vector<srg::container::Edge>& edges);
+
     /**
      * Containts the begin of a concept net query url.
      */

@@ -3,6 +3,8 @@
 
 #include <curl/curl.h>
 
+#include <ctype.h>
+
 namespace srg
 {
 namespace wm
@@ -28,34 +30,53 @@ ConceptNet::ConceptNet(SRGWorldModel* wm)
     this->init();
 }
 
-ConceptNet::~ConceptNet() {}
+std::vector<srg::container::Edge> ConceptNet::getEdges(const std::string& concept)
+{
+    std::vector<srg::container::Edge> edges;
+    std::string json = httpGet(ConceptNet::BASE_URL + ConceptNet::QUERYNODE + concept + ConceptNet::LIMIT);
+    generateEdges(json, edges);
+    return edges;
+}
+std::vector<srg::container::Edge> ConceptNet::getCompleteEdge(srg::container::Relation relation, const std::string& fromConcept, const std::string& toConcept)
+{
+    std::vector<srg::container::Edge> edges;
+    std::string json = httpGet(ConceptNet::BASE_URL + ConceptNet::QUERYSTART + fromConcept + ConceptNet::RELATION + relationMapping[relation] + END +
+                               toConcept + ConceptNet::LIMIT);
+    generateEdges(json, edges);
+    return edges;
+}
+std::vector<srg::container::Edge> ConceptNet::getOutgoingEdges(srg::container::Relation relation, const std::string& fromConcept)
+{
+    std::vector<srg::container::Edge> edges;
+    std::string json =
+            httpGet(ConceptNet::BASE_URL + ConceptNet::QUERYSTART + fromConcept + ConceptNet::RELATION + relationMapping[relation] + ConceptNet::LIMIT);
+    generateEdges(json, edges);
+    return edges;
+}
+std::vector<srg::container::Edge> ConceptNet::getIncomingEdges(srg::container::Relation relation, const std::string& toConcept)
+{
+    std::vector<srg::container::Edge> edges;
+    std::string json = httpGet(ConceptNet::BASE_URL + ConceptNet::QUERYEND + toConcept + ConceptNet::RELATION + relationMapping[relation] + ConceptNet::LIMIT);
+    generateEdges(json, edges);
+    return edges;
+}
+std::vector<srg::container::Edge> ConceptNet::getRelations(const std::string& concept, const std::string& otherConcept)
+{
+    std::vector<srg::container::Edge> edges;
+    std::string json = httpGet(ConceptNet::BASE_URL + ConceptNet::QUERYSTART + concept + ConceptNet::END + otherConcept + ConceptNet::LIMIT);
+    generateEdges(json, edges);
+    return edges;
+}
 
-std::string ConceptNet::getConcept(std::string concept)
-{
-    return httpGet(ConceptNet::BASE_URL + ConceptNet::QUERYNODE + concept + ConceptNet::LIMIT);
-}
-std::string ConceptNet::getCompleteEdge(ConceptNet::Relations relation, std::string fromConcept, std::string toConcept)
-{
-    return httpGet(ConceptNet::BASE_URL + ConceptNet::QUERYSTART + fromConcept + ConceptNet::RELATION + relationMapping[relation] + END + toConcept +
-                   ConceptNet::LIMIT);
-}
-std::string ConceptNet::getOutgoingEdges(ConceptNet::Relations relation, std::string fromConcept)
-{
-    return httpGet(ConceptNet::BASE_URL + ConceptNet::QUERYSTART + fromConcept + ConceptNet::RELATION + relationMapping[relation] + ConceptNet::LIMIT);
-}
-std::string ConceptNet::getIncomingEdges(ConceptNet::Relations relation, std::string toConcept)
-{
-    return httpGet(ConceptNet::BASE_URL + ConceptNet::QUERYEND + toConcept + ConceptNet::RELATION + relationMapping[relation] + ConceptNet::LIMIT);
-}
-std::string ConceptNet::getRelations(std::string concept, std::string otherConcept)
-{
-    return httpGet(ConceptNet::BASE_URL + ConceptNet::QUERYSTART + concept + ConceptNet::END + otherConcept + ConceptNet::LIMIT);
-}
-
-double ConceptNet::getRelatedness(std::string firstConcept, std::string secondConcept)
+double ConceptNet::getRelatedness(const std::string& firstConcept, const std::string& secondConcept)
 {
     std::string json = httpGet(ConceptNet::BASE_URL + ConceptNet::RELATEDNESS + ConceptNet::NODE1 + firstConcept + ConceptNet::NODE2 + secondConcept);
-    return 0.0;
+    YAML::Node node;
+    node = YAML::Load(json);
+    if (!isValid(node)) {
+        return NAN;
+    }
+    return node["value"].as<double>();
 }
 
 std::size_t callback(const char* in, std::size_t size, std::size_t num, std::string* out)
@@ -65,7 +86,7 @@ std::size_t callback(const char* in, std::size_t size, std::size_t num, std::str
     return totalBytes;
 }
 
-std::string ConceptNet::httpGet(std::string url)
+std::string ConceptNet::httpGet(const std::string& url)
 {
     CURL* curl = curl_easy_init();
 
@@ -103,46 +124,128 @@ std::string ConceptNet::httpGet(std::string url)
 
 void ConceptNet::init()
 {
-    relationMapping[RelatedTo] = "RelatedTo";
-    relationMapping[FormOf] = "FormOf";
-    relationMapping[IsA] = "IsA";
-    relationMapping[PartOf] = "PartOf";
-    relationMapping[HasA] = "HasA";
-    relationMapping[UsedFor] = "UsedFor";
-    relationMapping[CapableOf] = "CapableOf";
-    relationMapping[AtLocation] = "AtLocation";
-    relationMapping[Causes] = "Causes";
-    relationMapping[HasSubevent] = "HasSubevent";
-    relationMapping[HasFirstSubevent] = "HasFirstSubevent";
-    relationMapping[HasLastSubevent] = "HasLastSubevent";
-    relationMapping[HasPrerequisite] = "HasPrerequisite";
-    relationMapping[HasProperty] = "HasProperty";
-    relationMapping[MotivatedByGoal] = "MotivatedByGoal";
-    relationMapping[ObstructedBy] = "ObstructedBy";
-    relationMapping[Desires] = "Desires";
-    relationMapping[CreatedBy] = "CreatedBy";
-    relationMapping[Synonym] = "Synonym";
-    relationMapping[Antonym] = "Antonym";
-    relationMapping[DistinctFrom] = "DistinctFrom";
-    relationMapping[DerivedFrom] = "DerivedFrom";
-    relationMapping[SymbolOf] = "SymbolOf";
-    relationMapping[DefinedAs] = "DefinedAs";
-    relationMapping[Entails] = "Entails";
-    relationMapping[MannerOf] = "MannerOf";
-    relationMapping[LocatedNear] = "LocatedNear";
-    relationMapping[HasContext] = "HasContext";
-    relationMapping[SimilarTo] = "SimilarTo";
-    relationMapping[EtymologicallyRelatedTo] = "EtymologicallyRelatedTo";
-    relationMapping[EtymologicallyDerivedFrom] = "EtymologicallyDerivedFrom";
-    relationMapping[CausesDesire] = "CausesDesire";
-    relationMapping[MadeOf] = "MadeOf";
-    relationMapping[ReceivesAction] = "ReceivesAction";
-    relationMapping[InstanceOf] = "InstanceOf";
-    relationMapping[NotDesires] = "NotDesires";
-    relationMapping[NotUsedFor] = "NotUsedFor";
-    relationMapping[NotCapableOf] = "NotCapableOf";
-    relationMapping[NotIsA] = "NotIsA";
-    relationMapping[NotHasProperty] = "NotHasProperty";
+    relationMapping[srg::container::Relation::RelatedTo] = "RelatedTo";
+    relationMapping[srg::container::Relation::FormOf] = "FormOf";
+    relationMapping[srg::container::Relation::IsA] = "IsA";
+    relationMapping[srg::container::Relation::PartOf] = "PartOf";
+    relationMapping[srg::container::Relation::HasA] = "HasA";
+    relationMapping[srg::container::Relation::UsedFor] = "UsedFor";
+    relationMapping[srg::container::Relation::CapableOf] = "CapableOf";
+    relationMapping[srg::container::Relation::AtLocation] = "AtLocation";
+    relationMapping[srg::container::Relation::Causes] = "Causes";
+    relationMapping[srg::container::Relation::HasSubevent] = "HasSubevent";
+    relationMapping[srg::container::Relation::HasFirstSubevent] = "HasFirstSubevent";
+    relationMapping[srg::container::Relation::HasLastSubevent] = "HasLastSubevent";
+    relationMapping[srg::container::Relation::HasPrerequisite] = "HasPrerequisite";
+    relationMapping[srg::container::Relation::HasProperty] = "HasProperty";
+    relationMapping[srg::container::Relation::MotivatedByGoal] = "MotivatedByGoal";
+    relationMapping[srg::container::Relation::ObstructedBy] = "ObstructedBy";
+    relationMapping[srg::container::Relation::Desires] = "Desires";
+    relationMapping[srg::container::Relation::CreatedBy] = "CreatedBy";
+    relationMapping[srg::container::Relation::Synonym] = "Synonym";
+    relationMapping[srg::container::Relation::Antonym] = "Antonym";
+    relationMapping[srg::container::Relation::DistinctFrom] = "DistinctFrom";
+    relationMapping[srg::container::Relation::DerivedFrom] = "DerivedFrom";
+    relationMapping[srg::container::Relation::SymbolOf] = "SymbolOf";
+    relationMapping[srg::container::Relation::DefinedAs] = "DefinedAs";
+    relationMapping[srg::container::Relation::Entails] = "Entails";
+    relationMapping[srg::container::Relation::MannerOf] = "MannerOf";
+    relationMapping[srg::container::Relation::LocatedNear] = "LocatedNear";
+    relationMapping[srg::container::Relation::HasContext] = "HasContext";
+    relationMapping[srg::container::Relation::SimilarTo] = "SimilarTo";
+    relationMapping[srg::container::Relation::EtymologicallyRelatedTo] = "EtymologicallyRelatedTo";
+    relationMapping[srg::container::Relation::EtymologicallyDerivedFrom] = "EtymologicallyDerivedFrom";
+    relationMapping[srg::container::Relation::CausesDesire] = "CausesDesire";
+    relationMapping[srg::container::Relation::MadeOf] = "MadeOf";
+    relationMapping[srg::container::Relation::ReceivesAction] = "ReceivesAction";
+    relationMapping[srg::container::Relation::InstanceOf] = "InstanceOf";
+    relationMapping[srg::container::Relation::NotDesires] = "NotDesires";
+    relationMapping[srg::container::Relation::NotUsedFor] = "NotUsedFor";
+    relationMapping[srg::container::Relation::NotCapableOf] = "NotCapableOf";
+    relationMapping[srg::container::Relation::NotIsA] = "NotIsA";
+    relationMapping[srg::container::Relation::NotHasProperty] = "NotHasProperty";
+    relationMapping[srg::container::Relation::UNDEFINED] = "UNDEFINED";
+}
+
+void ConceptNet::generateEdges(const std::string& json, std::vector<srg::container::Edge>& edges)
+{
+    YAML::Node node;
+    node = YAML::Load(json);
+    if (!isValid(node)) {
+        return;
+    }
+    YAML::Node jsonEdges = node["edges"];
+    for (size_t i = 0; i < jsonEdges.size(); i++) {
+        YAML::Node edge = jsonEdges[i];
+        double weight = edge["weight"].as<double>();
+        // end of edge
+        std::string edgeId = edge["@id"].as<std::string>();
+        YAML::Node end = edge["end"];
+        std::string endLanguage = end["language"].as<std::string>();
+        // skip non English
+        if (endLanguage != "en") {
+            continue;
+        }
+        std::string endTerm = end["term"].as<std::string>();
+        endTerm = trimTerm(endTerm);
+        if (std::isdigit(endTerm.at(0)) || this->conceptContainsNonASCII(endTerm)) {
+            std::cout << "ConceptNetQueryCommand: Skipping Concept:" << endTerm << std::endl;
+            continue;
+        }
+        std::string endSenseLabel = end["sense_label"].as<std::string>();
+        std::string endID = end["@id"].as<std::string>();
+        // start of edge
+        YAML::Node start = edge["start"];
+        std::string startLanguage = start["language"].as<std::string>();
+        // skip non English
+        if (startLanguage != "en") {
+            continue;
+        }
+        std::string startTerm = start["term"].as<std::string>();
+        startTerm = trimTerm(startTerm);
+        if (std::isdigit(startTerm.at(0)) || this->conceptContainsNonASCII(startTerm)) {
+            std::cout << "ConceptNetQueryCommand: Skipping concept:" << startTerm << std::endl;
+            continue;
+        }
+        std::string startSenseLabel = start["sense_label"].as<std::string>();
+        std::string startID = start["@id"].as<std::string>();
+        std::string relation = edge["rel"]["@id"].as<std::string>();
+        relation = trimTerm(relation); //.right(relation.size() - relation.lastIndexOf('/') - 1);
+        // create edge
+        edges.emplace_back(srg::container::Edge(edgeId, startLanguage, srg::container::Concept(startTerm, startSenseLabel, startID),
+                srg::container::Concept(endTerm, endSenseLabel, endID), getRelation(relation), weight));
+    }
+}
+
+bool ConceptNet::isValid(const YAML::Node& node)
+{
+    return node && YAML::NodeType::Null != node.Type();
+}
+
+srg::container::Relation ConceptNet::getRelation(const std::string& relation)
+{
+    for (auto& pair : relationMapping) {
+        if (pair.second == relation) {
+            return pair.first;
+        }
+    }
+    return srg::container::Relation::UNDEFINED;
+}
+
+bool ConceptNet::conceptContainsNonASCII(const std::string& concept)
+{
+    for (size_t i = 0; i < concept.length(); i++) {
+        if (!isascii(concept.at(i))) {
+            return true;
+        }
+    }
+    return false;
+}
+
+std::string ConceptNet::trimTerm(const std::string& term)
+{
+    auto pos = term.find_last_of('/');
+    return term.substr(pos + 1, term.length() - pos - 1);
 }
 
 } // namespace wm
