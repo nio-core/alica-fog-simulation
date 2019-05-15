@@ -22,8 +22,9 @@ Edge::~Edge() {}
 std::string Edge::toString()
 {
     std::stringstream ss;
-    ss << "Edge: " << this->fromConcept.term << " Sense: " << this->fromConcept.senseLabel << " " << this->relation << " " << this->toConcept.term
-       << " Sense: " << this->toConcept.senseLabel << " Weight: " << this->weight << " Number of sources: " << this->sources.size() << std::endl;
+    ss << "Edge with Language: " << this->language << " From Concept: " << this->fromConcept.term << " Sense: " << this->fromConcept.senseLabel
+       << " Relation: " << relations[this->relation] << " to Concept: " << this->toConcept.term << " Sense: " << this->toConcept.senseLabel
+       << " Weight: " << this->weight << std::endl;
     return ss.str();
 }
 } // namespace container

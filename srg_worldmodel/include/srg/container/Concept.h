@@ -10,7 +10,7 @@ class Concept
 {
 public:
     Concept(std::string term, std::string senseLabel, std::string id);
-    virtual ~Concept();
+    virtual ~Concept() = default;
     Concept(const Concept& concept);
 
     std::string term;

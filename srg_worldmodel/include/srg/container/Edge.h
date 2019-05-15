@@ -1,7 +1,7 @@
 #pragma once
 
 #include "srg/container/Concept.h"
-#include "srg/container/Relation.h"
+#include "srg/container/Relations.h"
 
 #include <string>
 #include <vector>
@@ -10,6 +10,7 @@ namespace srg
 {
 namespace container
 {
+
 class Edge
 {
 public:

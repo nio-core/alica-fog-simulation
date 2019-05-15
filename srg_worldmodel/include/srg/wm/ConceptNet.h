@@ -1,7 +1,7 @@
 #pragma once
 
 #include "srg/container/Edge.h"
-#include "srg/container/Relation.h"
+#include "srg/container/Relations.h"
 
 #include <yaml-cpp/yaml.h>
 
@@ -29,8 +29,6 @@ public:
 
 private:
     SRGWorldModel* wm;
-    std::map<srg::container::Relation, std::string> relationMapping;
-    void init();
     std::string httpGet(const std::string& url);
     bool isValid(const YAML::Node& node);
     srg::container::Relation getRelation(const std::string& relation);

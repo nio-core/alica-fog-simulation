@@ -14,7 +14,7 @@ Concept::Concept(const Concept& concept)
 {
     this->term = concept.term;
     this->senseLabel = concept.senseLabel;
-    this->id = id;
+    this->id = concept.id;
 }
 } // namespace container
 } // namespace srg
