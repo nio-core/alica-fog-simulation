@@ -34,9 +34,9 @@ Base::Base(std::string roleSetName, std::string masterPlanName, std::string role
     ae->setCommunicator(new alicaCapnzeroProxy::AlicaCapnzeroCommunication(ae));
 
     // ASP Solver
-    std::vector<char const*> args{"clingo", nullptr};
-    auto solver = new ::reasoner::asp::Solver(args);
-    auto solverWrapper = new alica::reasoner::ASPSolverWrapper(ae, args);
+//    std::vector<char const*> args{"clingo", nullptr};
+    auto solver = new ::reasoner::asp::Solver({});
+    auto solverWrapper = new alica::reasoner::ASPSolverWrapper(ae, {});
     solverWrapper->init(solver);
     ae->addSolver(solverWrapper);
 
@@ -45,7 +45,7 @@ Base::Base(std::string roleSetName, std::string masterPlanName, std::string role
     wm->init();
 
     if (!ae->init(bc, cc, uc, crc)) {
-        std::cerr << "Base: Unable to initialize the Alica Engine successfull!" << std::endl;
+        std::cerr << "Base: Unable to initialize the Alica Engine successful!" << std::endl;
     }
 
 //    wm->knowledgeManager.initializeSolver();
