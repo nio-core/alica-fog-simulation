@@ -17,6 +17,16 @@ Edge::Edge(std::string id, std::string language, Concept fromConcept, Concept to
     this->relation = relation;
 }
 
+Edge::Edge(const Edge& edge)
+        : fromConcept(edge.fromConcept)
+        , toConcept(edge.toConcept)
+{
+    this->id = edge.id;
+    this->language = edge.language;
+    this->weight = edge.weight;
+    this->relation = edge.relation;
+}
+
 Edge::~Edge() {}
 
 std::string Edge::toString()

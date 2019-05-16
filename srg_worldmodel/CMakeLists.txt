@@ -28,6 +28,7 @@ add_library(srg_worldmodel
         src/ConceptNet.cpp
         src/Edge.cpp
         src/Concept.cpp
+        src/EdgeTranslator.cpp
 )
 
 target_link_libraries(srg_worldmodel
