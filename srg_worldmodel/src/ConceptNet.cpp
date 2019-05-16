@@ -15,7 +15,6 @@ const std::string ConceptNet::QUERYSTART = "/query?start=/c/en/";
 const std::string ConceptNet::QUERYEND = "/query?end=/c/en/";
 const std::string ConceptNet::QUERYNODE = "/query?node=/c/en/";
 const std::string ConceptNet::QUERYOTHER = "/query?other=/c/en/";
-const std::string ConceptNet::PREFIX = "cn5_";
 const std::string ConceptNet::WILDCARD = "wildcard";
 const std::string ConceptNet::LIMIT = "&limit=1000";
 const std::string ConceptNet::RELATION = "&rel=/r/";
@@ -173,7 +172,7 @@ void ConceptNet::generateEdges(const std::string& json, std::vector<srg::contain
         relation = trimTerm(relation); //.right(relation.size() - relation.lastIndexOf('/') - 1);
         // create edge
         edges.emplace_back(srg::container::Edge(edgeId, startLanguage, srg::container::Concept(startTerm, startSenseLabel, startID),
-                srg::container::Concept(endTerm, endSenseLabel, endID), getRelation(relation), weight));
+                srg::container::Concept(endTerm, endSenseLabel, endID), getRelation(relation), weight * edge["sources"].size()));
     }
 }
 

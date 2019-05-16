@@ -57,10 +57,6 @@ private:
      */
     static const std::string QUERYOTHER;
     /**
-     * Containts the cn5_ prefix.
-     */
-    static const std::string PREFIX;
-    /**
      * Wildcard string
      */
     static const std::string WILDCARD;
