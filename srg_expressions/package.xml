@@ -9,6 +9,8 @@
   <depend>alica_engine</depend>
   <depend>capnzero</depend>
   <depend>system_config</depend>
+  <depend>grid_sim</depend>
+
   <license>MIT</license>
 
 

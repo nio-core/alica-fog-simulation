@@ -1,7 +1,9 @@
 #include "DomainBehaviour.h"
 /*PROTECTED REGION ID(domainBehaviourSrcHeaders) ENABLED START*/
-#include <capnzero/Publisher.h>
 #include <SystemConfig.h>
+#include <capnzero/Publisher.h>
+
+#include <capnp/message.h>
 /*PROTECTED REGION END*/
 
 namespace alica
@@ -29,6 +31,20 @@ DomainBehaviour::~DomainBehaviour()
 }
 
 /*PROTECTED REGION ID(domainBehaviourMethods) ENABLED START*/
-// Add additional options here
+void DomainBehaviour::sendSimCmd(srgsim::Command::Action action, uint32_t x, uint32_t y) {
+    // init builder
+    ::capnp::MallocMessageBuilder msgBuilder;
+    srgsim::Command::Builder commandBuilder = msgBuilder.initRoot<srgsim::Command>();
+    commandBuilder.setAction(action);
+    commandBuilder.setX(x);
+    commandBuilder.setY(y);
+
+//        UUID::Builder sender = commandBuilder.initSenderId();
+//        sender.setValue(kj::arrayPtr(aai.senderID->getRaw(), (unsigned int) aai.senderID->getSize()));
+//    commandBuilder.setSenderId()
+
+
+    this->simPub->send(msgBuilder);
+}
 /*PROTECTED REGION END*/
 } /* namespace alica */

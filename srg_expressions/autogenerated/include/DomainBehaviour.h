@@ -3,6 +3,8 @@
 #include <engine/BasicBehaviour.h>
 #include <string>
 /*PROTECTED REGION ID(domainBehaviourHeaderHead) ENABLED START*/
+#include <srgsim/Command.capnp.h>
+
 namespace capnzero {
     class Publisher;
 }
@@ -28,6 +30,8 @@ public:
 
     capnzero::Publisher* simPub;
     void* capnzeroContext;
+
+    void sendSimCmd(srgsim::Command::Action action, uint32_t x, uint32_t y);
 
     /*PROTECTED REGION END*/
 };
