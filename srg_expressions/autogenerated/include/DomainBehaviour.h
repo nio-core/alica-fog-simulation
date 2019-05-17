@@ -3,7 +3,13 @@
 #include <engine/BasicBehaviour.h>
 #include <string>
 /*PROTECTED REGION ID(domainBehaviourHeaderHead) ENABLED START*/
-// Add additional options here
+namespace capnzero {
+    class Publisher;
+}
+
+namespace essentials {
+    class SystemConfig;
+}
 /*PROTECTED REGION END*/
 
 namespace alica
@@ -15,7 +21,14 @@ public:
     virtual ~DomainBehaviour();
 
     /*PROTECTED REGION ID(domainBehaviourClassDecl) ENABLED START*/
-    // Add additional options here
+    essentials::SystemConfig* sc;
+
+    std::string simCmdTopic;
+    std::string simAddress;
+
+    capnzero::Publisher* simPub;
+    void* capnzeroContext;
+
     /*PROTECTED REGION END*/
 };
 } /* namespace alica */
