@@ -10,6 +10,8 @@
   <depend>capnzero</depend>
   <depend>system_config</depend>
   <depend>grid_sim</depend>
+  <depend>srg_robot</depend>
+  <depend>srg_worldmodel</depend>
 
   <license>MIT</license>
 
