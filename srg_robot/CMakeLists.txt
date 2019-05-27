@@ -3,12 +3,12 @@ project(srg_robot)
 
 add_compile_options(-std=c++11)
 
-find_package(catkin REQUIRED srg_worldmodel capnzero grid_sim agent_id)
+find_package(catkin REQUIRED srg_worldmodel capnzero grid_sim id_capnzero)
 
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES srg_robot
-  CATKIN_DEPENDS srg_worldmodel capnzero agent_id
+  CATKIN_DEPENDS srg_worldmodel capnzero id_capnzero
 #  DEPENDS system_lib
 )
 

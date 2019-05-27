@@ -7,7 +7,7 @@
   <license>MIT</license>
   <depend>srg_worldmodel</depend>
   <depend>capnzero</depend>
-  <depend>agent_id</depend>
+  <depend>id_capnzero</depend>
   <buildtool_depend>catkin</buildtool_depend>
   <export>
   </export>

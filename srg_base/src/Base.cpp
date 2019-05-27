@@ -24,7 +24,7 @@ bool Base::running = false;
 
 Base::Base(std::string roleSetName, std::string masterPlanName, std::string roleSetDir)
 {
-    ae = new alica::AlicaEngine(new essentials::AgentIDManager(new essentials::AgentIDFactory()), roleSetName, masterPlanName, false);
+    ae = new alica::AlicaEngine(new essentials::IDManager(), roleSetName, masterPlanName, false);
     bc = new alica::BehaviourCreator();
     cc = new alica::ConditionCreator();
     uc = new alica::UtilityFunctionCreator();

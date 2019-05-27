@@ -1,7 +1,7 @@
 #pragma once
 
 #include <srgsim/Command.capnp.h>
-#include <essentials/AgentIDConstPtr.h>
+#include <essentials/IdentifierConstPtr.h>
 
 #include <string>
 
@@ -37,7 +37,7 @@ private:
 
     capnzero::Publisher* simPub;
     void* capnzeroContext;
-    essentials::AgentIDConstPtr id;
+    essentials::IdentifierConstPtr id;
 
     srg::SRGWorldModel* wm;
 };
