@@ -9,17 +9,9 @@
   "preCondition" : null,
   "runtimeCondition" : null,
   "postCondition" : null,
-  "configurations" : [ {
-    "id" : 1558533534828,
-    "name" : "default",
-    "comment" : "",
-    "relativeDirectory" : "Behaviours",
-    "variables" : [ ],
-    "behaviour" : 1558533534825,
-    "keyValuePairs" : {
-      "a" : "1",
-      "b" : "2",
-      "d" : "5"
-    }
-  } ]
+  "parameters" : {
+    "a" : "1",
+    "b" : "2",
+    "d" : "5"
+  }
 }
