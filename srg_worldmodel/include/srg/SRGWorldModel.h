@@ -31,7 +31,7 @@ public:
 
     virtual ~SRGWorldModel();
     void init();
-    void initSolver(::reasoner::asp::Solver* solver);
+    void setSolver(::reasoner::asp::Solver* solver);
     std::string getAgentName();
 
     // Public Data Access Classes

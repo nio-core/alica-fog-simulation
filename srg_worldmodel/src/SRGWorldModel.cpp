@@ -31,7 +31,7 @@ void SRGWorldModel::init()
 
 }
 
-void SRGWorldModel::initSolver(reasoner::asp::Solver* solver) {
-    this->knowledgeManager.initializeSolver(solver);
+void SRGWorldModel::setSolver(reasoner::asp::Solver* solver) {
+    this->knowledgeManager.setSolver(solver);
 }
 } /* namespace wumpus */
