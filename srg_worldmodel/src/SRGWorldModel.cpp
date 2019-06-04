@@ -1,7 +1,5 @@
 #include "srg/SRGWorldModel.h"
 
-#include <engine/AlicaEngine.h>
-
 namespace srg
 {
 
@@ -14,7 +12,6 @@ SRGWorldModel* SRGWorldModel::getInstance()
 SRGWorldModel::SRGWorldModel()
         : WorldModel()
         , sRGSimData(this)
-        , knowledgeManager(this)
         , conceptNet(this)
 {
     this->agentName = sc->getHostname();
@@ -32,5 +29,9 @@ std::string SRGWorldModel::getAgentName()
 void SRGWorldModel::init()
 {
 
+}
+
+void SRGWorldModel::initSolver(reasoner::asp::Solver* solver) {
+    this->knowledgeManager.initializeSolver(solver);
 }
 } /* namespace wumpus */

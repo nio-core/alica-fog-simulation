@@ -20,6 +20,7 @@
   <depend>asp_solver_wrapper</depend>
   <depend>asp_solver</depend>
   <depend>asp_commons</depend>
+  <depend>knowledge_manager</depend>
 
   <export>
   </export>
