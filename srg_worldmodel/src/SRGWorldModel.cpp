@@ -1,5 +1,7 @@
 #include "srg/SRGWorldModel.h"
 
+#include "srg/wm/ConceptNet.h"
+
 namespace srg
 {
 
@@ -12,13 +14,15 @@ SRGWorldModel* SRGWorldModel::getInstance()
 SRGWorldModel::SRGWorldModel()
         : WorldModel()
         , sRGSimData(this)
-        , conceptNet(this)
+        , basicHumanNeeds(this)
 {
     this->agentName = sc->getHostname();
+    this->conceptNet = new wm::ConceptNet(this);
 }
 
 SRGWorldModel::~SRGWorldModel()
 {
+    delete this->conceptNet;
 }
 
 std::string SRGWorldModel::getAgentName()

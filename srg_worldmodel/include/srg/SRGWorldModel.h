@@ -1,6 +1,6 @@
 #pragma once
 
-#include "srg/wm/ConceptNet.h"
+#include "wm/BasicHumanNeeds.h"
 #include "wm/SRGSimData.h"
 
 #include <SystemConfig.h>
@@ -24,6 +24,7 @@ class Solver;
 
 namespace srg
 {
+class ConceptNet;
 class SRGWorldModel : public supplementary::WorldModel
 {
 public:
@@ -37,7 +38,8 @@ public:
     // Public Data Access Classes
     wm::SRGSimData sRGSimData;
     knowledge_manager::ASPKnowledgeManager knowledgeManager;
-    wm::ConceptNet conceptNet;
+    wm::ConceptNet* conceptNet;
+    wm::BasicHumanNeeds basicHumanNeeds;
 
 private:
     SRGWorldModel(); /**< Private Singleton Constructor */

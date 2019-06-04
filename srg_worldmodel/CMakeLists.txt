@@ -28,7 +28,7 @@ add_library(srg_worldmodel
         src/Concept.cpp
         src/EdgeTranslator.cpp
         src/Communication.cpp
-        )
+        include/srg/wm/BasicHumanNeeds.cpp include/srg/wm/BasicHumanNeeds.h)
 
 target_link_libraries(srg_worldmodel
   ${catkin_LIBRARIES}

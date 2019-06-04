@@ -35,6 +35,14 @@ std::vector<srg::container::Edge> ConceptNet::getEdges(const std::string& concep
     generateEdges(json, edges);
     return edges;
 }
+
+std::vector<srg::container::Edge> ConceptNet::getEdges(srg::container::Relation relation, const std::string& concept) {
+    std::vector<srg::container::Edge> edges;
+    std::string json = httpGet(ConceptNet::BASE_URL + ConceptNet::QUERYNODE + concept + ConceptNet::RELATION + srg::container::relations[relation] + ConceptNet::LIMIT);
+    generateEdges(json, edges);
+    return edges;
+}
+
 std::vector<srg::container::Edge> ConceptNet::getCompleteEdge(srg::container::Relation relation, const std::string& fromConcept, const std::string& toConcept)
 {
     std::vector<srg::container::Edge> edges;
@@ -46,15 +54,16 @@ std::vector<srg::container::Edge> ConceptNet::getCompleteEdge(srg::container::Re
 std::vector<srg::container::Edge> ConceptNet::getOutgoingEdges(srg::container::Relation relation, const std::string& fromConcept)
 {
     std::vector<srg::container::Edge> edges;
-    std::string json =
-            httpGet(ConceptNet::BASE_URL + ConceptNet::QUERYSTART + fromConcept + ConceptNet::RELATION + srg::container::relations[relation] + ConceptNet::LIMIT);
+    std::string json = httpGet(
+            ConceptNet::BASE_URL + ConceptNet::QUERYSTART + fromConcept + ConceptNet::RELATION + srg::container::relations[relation] + ConceptNet::LIMIT);
     generateEdges(json, edges);
     return edges;
 }
 std::vector<srg::container::Edge> ConceptNet::getIncomingEdges(srg::container::Relation relation, const std::string& toConcept)
 {
     std::vector<srg::container::Edge> edges;
-    std::string json = httpGet(ConceptNet::BASE_URL + ConceptNet::QUERYEND + toConcept + ConceptNet::RELATION + srg::container::relations[relation] + ConceptNet::LIMIT);
+    std::string json =
+            httpGet(ConceptNet::BASE_URL + ConceptNet::QUERYEND + toConcept + ConceptNet::RELATION + srg::container::relations[relation] + ConceptNet::LIMIT);
     generateEdges(json, edges);
     return edges;
 }
@@ -164,7 +173,7 @@ void ConceptNet::generateEdges(const std::string& json, std::vector<srg::contain
             continue;
         }
         std::string startSenseLabel = "";
-        if(start["sense_label"]) {
+        if (start["sense_label"]) {
             startSenseLabel = start["sense_label"].as<std::string>();
         }
         std::string startID = start["@id"].as<std::string>();
@@ -187,7 +196,7 @@ srg::container::Relation ConceptNet::getRelation(const std::string& relation)
     for (auto& rel : srg::container::relations) {
         std::string str(rel);
         if (str == relation) {
-            return static_cast<srg::container::Relation >(position);
+            return static_cast<srg::container::Relation>(position);
         }
         position++;
     }

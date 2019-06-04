@@ -21,6 +21,7 @@ public:
     virtual ~ConceptNet() = default;
 
     std::vector<srg::container::Edge> getEdges(const std::string& concept);
+    std::vector<srg::container::Edge> getEdges(srg::container::Relation relation, const std::string& concept);
     std::vector<srg::container::Edge> getCompleteEdge(srg::container::Relation relation, const std::string& fromConcept, const std::string& toConcept);
     std::vector<srg::container::Edge> getOutgoingEdges(srg::container::Relation relation, const std::string& fromConcept);
     std::vector<srg::container::Edge> getIncomingEdges(srg::container::Relation relation, const std::string& toConcept);
