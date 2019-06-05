@@ -28,6 +28,9 @@ std::vector<std::string> BasicHumanNeeds::answerNeed(std::string need)
      */
     // 1. ask ConceptNet for MotivatedByGoal(WILDCARD, need)
     std::vector<container::Edge> motivatedEdges = this->cn->getIncomingEdges(container::Relation::MotivatedByGoal, need, 5);
+    std::vector<container::Edge> causesDesireEdges = this->cn->getOutgoingEdges(container::Relation::CausesDesire, need, 5);
+    motivatedEdges.insert(motivatedEdges.end(), causesDesireEdges.begin(), causesDesireEdges.end());
+    std::sort(motivatedEdges.begin(), motivatedEdges.end());
     // 2. ask ConceptNet for Synonyms for top 5 results from 1.
     //=> Synonym, IsA(subtype), SimilarTo, InstanceOf
     int size = (motivatedEdges.size() < 5 ? motivatedEdges.size() : 5);
