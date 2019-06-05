@@ -15,7 +15,7 @@ BasicHumanNeeds::BasicHumanNeeds(SRGWorldModel* wm)
 
 std::vector<std::string> BasicHumanNeeds::answerNeed(std::string need)
 {
-    // TODO
+    // TODO add CausesDesire to step 1
     /**
      *  1. ask ConceptNet for MotivatedByGoal(WILDCARD, need)
      *  2. ask ConceptNet for Synonyms for top 5 results from 1.
@@ -27,8 +27,7 @@ std::vector<std::string> BasicHumanNeeds::answerNeed(std::string need)
      *  6. return top 5
      */
     // 1. ask ConceptNet for MotivatedByGoal(WILDCARD, need)
-    std::vector<container::Edge> motivatedEdges = this->cn->getIncomingEdges(container::Relation::MotivatedByGoal, need);
-    std::sort(motivatedEdges.begin(), motivatedEdges.end());
+    std::vector<container::Edge> motivatedEdges = this->cn->getIncomingEdges(container::Relation::MotivatedByGoal, need, 5);
     // 2. ask ConceptNet for Synonyms for top 5 results from 1.
     //=> Synonym, IsA(subtype), SimilarTo, InstanceOf
     int size = (motivatedEdges.size() < 5 ? motivatedEdges.size() : 5);
@@ -40,7 +39,7 @@ std::vector<std::string> BasicHumanNeeds::answerNeed(std::string need)
     // 4. ask ConceptNet for UsedFor(concept, WILDCARD)
     std::vector<container::Edge> usedForEdges;
     for (int i = 0; i < size; i++) {
-        auto tmp = this->cn->getOutgoingEdges(container::Relation::UsedFor, synonyms.at(i).fromConcept.term);
+        auto tmp = this->cn->getIncomingEdges(container::Relation::UsedFor, synonyms.at(i).fromConcept.term, 5);
         usedForEdges.insert(usedForEdges.end(), tmp.begin(), tmp.end());
     }
     // 5. ask ConceptNet for Synonyms for top 5 results from 4
@@ -52,7 +51,7 @@ std::vector<std::string> BasicHumanNeeds::answerNeed(std::string need)
     size = (synonyms.size() < 5 ? synonyms.size() : 5);
     std::vector<std::string> answer;
     for (int i = 0; i < size; i++) {
-        answer.push_back(synonyms.at(i).toConcept.term);
+        answer.push_back(synonyms.at(i).fromConcept.term);
     }
     return answer;
 }
@@ -62,13 +61,13 @@ void BasicHumanNeeds::getSynonyms(std::vector<container::Edge>& edges, int size,
     synonyms.insert(synonyms.begin(), edges.begin(), edges.begin() + size);
     std::vector<container::Edge> tmp;
     for (int i = 0; i < size; i++) {
-        tmp = cn->getOutgoingEdges(container::Synonym, edges.at(i).fromConcept.term);
+        tmp = cn->getOutgoingEdges(container::Synonym, edges.at(i).toConcept.term, 5);
         synonyms.insert(synonyms.end(), tmp.begin(), tmp.end());
-        tmp = cn->getOutgoingEdges(container::IsA, edges.at(i).fromConcept.term);
+        tmp = cn->getOutgoingEdges(container::IsA, edges.at(i).toConcept.term , 5);
         synonyms.insert(synonyms.end(), tmp.begin(), tmp.end());
-        tmp = cn->getOutgoingEdges(container::SimilarTo, edges.at(i).fromConcept.term);
+        tmp = cn->getOutgoingEdges(container::SimilarTo, edges.at(i).toConcept.term, 5);
         synonyms.insert(synonyms.end(), tmp.begin(), tmp.end());
-        tmp = cn->getOutgoingEdges(container::InstanceOf, edges.at(i).fromConcept.term);
+        tmp = cn->getOutgoingEdges(container::InstanceOf, edges.at(i).toConcept.term, 5);
         synonyms.insert(synonyms.end(), tmp.begin(), tmp.end());
     }
 }
