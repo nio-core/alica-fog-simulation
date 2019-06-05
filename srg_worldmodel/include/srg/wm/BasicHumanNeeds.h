@@ -1,5 +1,7 @@
 #pragma once
 
+#include "srg/container/Edge.h"
+
 #include <string>
 #include <vector>
 
@@ -19,6 +21,8 @@ public:
 private:
     SRGWorldModel* wm;
     ConceptNet* cn;
+
+    void getSynonyms(std::vector<srg::container::Edge>& edges, int size, std::vector<srg::container::Edge>& synonyms) const;
 };
 } // namespace wm
 } // namespace srg
